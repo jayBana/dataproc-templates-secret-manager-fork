@@ -23,6 +23,7 @@ from dataproc_templates import BaseTemplate
 from dataproc_templates.util.argument_parsing import add_spark_options
 from dataproc_templates.util.dataframe_writer_wrappers import persist_dataframe_to_cloud_storage
 import dataproc_templates.util.template_constants as constants
+import dataproc_templates.util.secret_manager_wrapper as secrets
 
 
 __all__ = ['JDBCToGCSTemplate']
@@ -201,6 +202,10 @@ class JDBCToGCSTemplate(BaseTemplate):
             "Starting JDBC to Cloud Storage Spark job with parameters:\n"
             f"{pprint.pformat(filtered_args)}"
         )
+
+        db_user = secrets.access_secret_version("db_user")
+        db_password = secrets.access_secret_version("db_password")
+        input_jdbc_url = f"{input_jdbc_url}?user={db_user}&password={db_password}"
 
         # Read
         input_data: DataFrame

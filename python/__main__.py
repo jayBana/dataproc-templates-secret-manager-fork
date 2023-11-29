@@ -15,6 +15,9 @@
 from typing import Dict, Any, Type
 import logging
 import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'py_deps', 'google_cloud_secret_manager-2.16.4'))
 
 from pyspark.sql import SparkSession
 
